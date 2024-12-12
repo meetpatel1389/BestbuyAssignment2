@@ -1,10 +1,10 @@
-# Best Buy Cloud-Native Demo Application
+# Best Buy Cloud-Native Application
 
-This repository contains a cloud-native, microservices-based demo application for Best Buy’s online store, inspired by the Algonquin Pet Store (On Steroids) architecture. The application demonstrates browsing products, placing orders, and managing product inventory. It also integrates with AI services for generating product descriptions and images, and uses a managed backing service (Azure Service Bus) for order queueing.
+This repository contains a cloud-native, microservices-based demo application for Best Buy’s online store, inspired by the Algonquin Pet Store (On Steroids) architecture. The application demonstrates browsing products, placing orders, and managing product inventory. It also integrates with AI services for generating product descriptions and images.
 
 ## Updated Architecture Diagram
 
-![Logical Application Architecture Diagram](assets/Algonquin%20Pet%20Store%20On%20Steroids.png)
+![bestar](https://github.com/user-attachments/assets/670e611f-9e66-43a8-a534-d46136212ed9)
 
 **Key Components:**
 - **Store-Front:** Customer-facing UI for browsing products and placing orders.
@@ -14,7 +14,7 @@ This repository contains a cloud-native, microservices-based demo application fo
 - **Makeline-Service:** Listens to Azure Service Bus, processes orders, updates MongoDB with order statuses.
 - **AI-Service:** Uses GPT-4 and DALL-E (via OpenAI or Azure OpenAI) for generating product descriptions and images.
 - **MongoDB:** Persists product and order data.
-- **Azure Service Bus (Managed Queue):** Replaces RabbitMQ for message passing between Order-Service and Makeline-Service.
+- **rabbitMq:** RabbitMQ for an order queue.
 
 ## Application Functionality
 
@@ -41,9 +41,6 @@ This repository contains a cloud-native, microservices-based demo application fo
 
 - **Kubernetes Cluster (AKS recommended)**
   - Ensure `kubectl` is configured to communicate with your cluster.
-- **Azure Service Bus**
-  - Create a Service Bus namespace and a queue (e.g., `orders`).
-  - Store connection strings as Kubernetes Secrets.
 - **OpenAI / Azure OpenAI Credentials**
   - Retrieve API keys and/or endpoint and store them as Kubernetes Secrets.
 - **MongoDB Credentials & Storage**
