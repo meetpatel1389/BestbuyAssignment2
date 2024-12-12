@@ -1,0 +1,94 @@
+# Deployment for Order Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  replicas: 1 # Single replica
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+        - name: order-service
+          image: meetpatel1389/order-service:latest # Custom image for order service
+          ports:
+            - containerPort: 3000 # Order service listens on this port
+          env: # Environment variables for configuration
+            - name: ORDER_QUEUE_HOSTNAME
+              value: "rabbitmq"
+            - name: ORDER_QUEUE_PORT
+              value: "5672"
+            - name: ORDER_QUEUE_USERNAME
+              value: "username"
+            - name: ORDER_QUEUE_PASSWORD
+              value: "password"
+            - name: ORDER_QUEUE_NAME
+              value: "orders"
+            - name: FASTIFY_ADDRESS
+              value: "0.0.0.0"
+          resources: # Resource allocation
+            requests:
+              cpu: 1m
+              memory: 50Mi
+            limits:
+              cpu: 100m
+              memory: 256Mi
+          startupProbe: # Initial health check
+            httpGet:
+              path: /health
+              port: 3000
+            failureThreshold: 5
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe: # Ready status probe
+            httpGet:
+              path: /health
+              port: 3000
+            failureThreshold: 3
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe: # Ongoing health check
+            httpGet:
+              path: /health
+              port: 3000
+            failureThreshold: 5
+            initialDelaySeconds: 3
+            periodSeconds: 3
+      initContainers: # Initialization container to wait for RabbitMQ
+        - name: wait-for-rabbitmq
+          image: busybox
+          command:
+            [
+              "sh",
+              "-c",
+              "until nc -zv rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done;",
+            ]
+          resources:
+            requests:
+              cpu: 1m
+              memory: 50Mi
+            limits:
+              cpu: 100m
+              memory: 256Mi
+---
+# Service for Order Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: order-service
+---

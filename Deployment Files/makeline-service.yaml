@@ -1,0 +1,79 @@
+# Deployment for Makeline Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: makeline-service
+spec:
+  replicas: 1 # Single replica
+  selector:
+    matchLabels:
+      app: makeline-service
+  template:
+    metadata:
+      labels:
+        app: makeline-service
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+        - name: makeline-service
+          image: meetpatel1389/makeline-service:latest # Custom Makeline service image
+          ports:
+            - containerPort: 3001 # Makeline service listens on this port
+          env: # Environment variables for configuration
+            - name: ORDER_QUEUE_URI
+              value: "amqp://rabbitmq:5672" # RabbitMQ connection string
+            - name: ORDER_QUEUE_USERNAME
+              value: "username"
+            - name: ORDER_QUEUE_PASSWORD
+              value: "password"
+            - name: ORDER_QUEUE_NAME
+              value: "orders"
+            - name: ORDER_DB_URI
+              value: "mongodb://mongodb:27017" # MongoDB connection string
+            - name: ORDER_DB_NAME
+              value: "orderdb" # Database name
+            - name: ORDER_DB_COLLECTION_NAME
+              value: "orders" # Collection name
+          resources: # Resource requests and limits
+            requests:
+              cpu: 1m
+              memory: 6Mi
+            limits:
+              cpu: 5m
+              memory: 20Mi
+          startupProbe: # Initial health check
+            httpGet:
+              path: /health
+              port: 3001
+            failureThreshold: 10
+            periodSeconds: 5
+          readinessProbe: # Ready status probe
+            httpGet:
+              path: /health
+              port: 3001
+            failureThreshold: 3
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe: # Ongoing health check
+            httpGet:
+              path: /health
+              port: 3001
+            failureThreshold: 5
+            initialDelaySeconds: 3
+            periodSeconds: 3
+---
+# Service for Makeline Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: makeline-service
+spec:
+  type: ClusterIP # Internal cluster service
+  ports:
+    - name: http
+      port: 3001 # Service port
+      targetPort: 3001
+  selector:
+    app: makeline-service
+---

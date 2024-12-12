@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: virtual-customer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: virtual-customer
+  template:
+    metadata:
+      labels:
+        app: virtual-customer
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+        - name: virtual-customer
+          image: meetpatel1389/virtual-customer:latest
+          env:
+            - name: ORDER_SERVICE_URL
+              value: http://order-service:3000/
+            - name: ORDERS_PER_HOUR
+              value: "200"
+          resources:
+            requests:
+              cpu: 1m
+              memory: 1Mi
+            limits:
+              cpu: 2m
+              memory: 20Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: virtual-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: virtual-worker
+  template:
+    metadata:
+      labels:
+        app: virtual-worker
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+        - name: virtual-worker
+          image: meetpatel1389/virtual-worker:latest
+          env:
+            - name: MAKELINE_SERVICE_URL
+              value: http://makeline-service:3001
+            - name: ORDERS_PER_HOUR
+              value: "50"
+          resources:
+            requests:
+              cpu: 1m
+              memory: 1Mi
+            limits:
+              cpu: 2m
+              memory: 20Mi

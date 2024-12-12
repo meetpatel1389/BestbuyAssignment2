@@ -1,0 +1,52 @@
+# StatefulSet for MongoDB
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+spec:
+  serviceName: mongodb # Associated headless service for DNS resolution
+  replicas: 1 # Number of MongoDB replicas
+  selector:
+    matchLabels:
+      app: mongodb # Labels to match for this StatefulSet
+  template:
+    metadata:
+      labels:
+        app: mongodb # Pod label for identification
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux # Run only on Linux nodes
+      containers:
+        - name: mongodb
+          image: mongo:4.2 # MongoDB container image version
+          ports:
+            - containerPort: 27017 # Default MongoDB port
+              name: mongodb
+          resources: # Resource requests and limits for MongoDB
+            requests:
+              cpu: 5m # Minimum CPU
+              memory: 75Mi # Minimum Memory
+            limits:
+              cpu: 25m # Maximum CPU
+              memory: 1024Mi # Maximum Memory
+          livenessProbe: # Probe to check MongoDB health
+            exec:
+              command:
+                - mongosh
+                - --eval
+                - db.runCommand('ping').ok
+            initialDelaySeconds: 5 # Wait time before starting probe
+            periodSeconds: 5 # Interval between probes
+---
+# Service to expose MongoDB
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+spec:
+  ports:
+    - port: 27017 # MongoDB service port
+  selector:
+    app: mongodb # Target pods with label `app: mongodb`
+  type: ClusterIP # Internal cluster service
+---

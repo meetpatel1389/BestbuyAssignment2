@@ -1,0 +1,82 @@
+# Deployment for AI Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-service
+  template:
+    metadata:
+      labels:
+        app: ai-service
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+        - name: ai-service
+          image: meetpatel1389/ai-service:latest
+          ports:
+            - containerPort: 5001
+          env:
+            - name: USE_AZURE_OPENAI # set to True for Azure OpenAI, False for Public OpenAI
+              value: "True"
+            - name: AZURE_OPENAI_API_VERSION
+              value: "2024-07-01-preview"
+            - name: AZURE_OPENAI_DEPLOYMENT_NAME # required if using Azure OpenAI
+              value: "gpt-4"
+            - name: AZURE_OPENAI_ENDPOINT # required if using Azure OpenAI
+              value: "https://lab8aibacking.openai.azure.com/"
+            - name: AZURE_OPENAI_DALLE_ENDPOINT
+              value: "https://lab8aibacking.openai.azure.com/"
+            - name: AZURE_OPENAI_DALLE_DEPLOYMENT_NAME
+              value: "dall-e-3"
+            - name: OPENAI_API_KEY # always required
+              valueFrom:
+                secretKeyRef:
+                  name: openai-api-secret
+                  key: OPENAI_API_KEY
+          resources:
+            requests:
+              cpu: 20m
+              memory: 50Mi
+            limits:
+              cpu: 50m
+              memory: 128Mi
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 5001
+            initialDelaySeconds: 60
+            failureThreshold: 3
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5001
+            initialDelaySeconds: 3
+            failureThreshold: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5001
+            initialDelaySeconds: 3
+            failureThreshold: 10
+            periodSeconds: 10
+---
+# Service for AI Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-service
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 5001
+      targetPort: 5001
+  selector:
+    app: ai-service

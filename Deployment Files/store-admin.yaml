@@ -1,0 +1,70 @@
+# Deployment for Store Admin
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: store-admin
+  template:
+    metadata:
+      labels:
+        app: store-admin
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+        - name: store-admin
+          image: meetpatel1389/store-admin:latest # Admin interface for store
+          ports:
+            - containerPort: 8081 # Admin app port
+              name: store-admin
+          env: # Environment variables for backend URLs
+            - name: VUE_APP_PRODUCT_SERVICE_URL
+              value: "http://product-service:3002/"
+            - name: VUE_APP_MAKELINE_SERVICE_URL
+              value: "http://makeline-service:3001/"
+          resources: # Resource requests and limits
+            requests:
+              cpu: 1m
+              memory: 200Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+          startupProbe: # Initial health check
+            httpGet:
+              path: /health
+              port: 8081
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe: # Ready status probe
+            httpGet:
+              path: /health
+              port: 8081
+            failureThreshold: 3
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe: # Ongoing health check
+            httpGet:
+              path: /health
+              port: 8081
+            failureThreshold: 5
+            initialDelaySeconds: 3
+            periodSeconds: 3
+---
+# Service for Store Admin
+apiVersion: v1
+kind: Service
+metadata:
+  name: store-admin
+spec:
+  ports:
+    - port: 80 # Service port exposed outside the cluster
+      targetPort: 8081
+  selector:
+    app: store-admin
+  type: LoadBalancer # Expose service externally via load balancer
+---

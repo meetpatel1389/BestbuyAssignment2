@@ -1,0 +1,61 @@
+# Deployment for Product Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service
+spec:
+  replicas: 1 # Single replica
+  selector:
+    matchLabels:
+      app: product-service
+  template:
+    metadata:
+      labels:
+        app: product-service
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+        - name: product-service
+          image: meetpatel1389/product-service:latest # Custom product service image
+          ports:
+            - containerPort: 3002 # Product service listens on this port
+          env: # Environment variables for configuration
+            - name: AI_SERVICE_URL
+              value: "http://ai-service:5001/" # URL for AI service integration
+          resources: # Resource requests and limits
+            requests:
+              cpu: 1m
+              memory: 1Mi
+            limits:
+              cpu: 2m
+              memory: 20Mi
+          readinessProbe: # Ready status probe
+            httpGet:
+              path: /health
+              port: 3002
+            failureThreshold: 3
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe: # Ongoing health check
+            httpGet:
+              path: /health
+              port: 3002
+            failureThreshold: 5
+            initialDelaySeconds: 3
+            periodSeconds: 3
+---
+# Service for Product Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3002 # Service port
+      targetPort: 3002
+  selector:
+    app: product-service
+---
