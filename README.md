@@ -61,6 +61,14 @@ This repository contains a cloud-native, microservices-based demo application fo
 Deploy all the yaml files from the Deployment Files folder one by one
 ```bash
 kubectl apply -f Deployment_Files/store-front.yaml
+kubectl apply -f Deployment_Files/store-admin.yaml
+kubectl apply -f Deployment_Files/product-service.yaml
+kubectl apply -f Deployment_Files/order-service.yaml
+kubectl apply -f Deployment_Files/ai-service.yaml
+kubectl apply -f Deployment_Files/mongodb.yaml
+kubectl apply -f Deployment_Files/make-line.yaml
+kubectl apply -f Deployment_Files/rabbitmq.yaml
+kubectl apply -f Deployment_Files/admin-tasks.yaml
 ````
 ## Validate the deployment:
 ```bash
@@ -96,3 +104,7 @@ kubectl get services
 | AI-Service        | [Docker Hub Link](https://hub.docker.com/r/meetpatel1389/ai-service)     |
 | Vitrual-customer    |  [DOCKER HUB LINK ](https://hub.docker.com/r/meetpatel1389/virtual-customer)   |
 | Vitrual- worker    | [ DOCKER HUB LINK ](https://hub.docker.com/r/meetpatel1389/virtual-worker)   |
+
+# Demo video
+[Click_Here_to_Watch_Video](https://youtu.be/B1EGbN0Xy8s)
+
