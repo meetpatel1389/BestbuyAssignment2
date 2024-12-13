@@ -158,9 +158,7 @@ kubectl get services
 2. **Add the Workflow File**:
    - Copy the `ci_cd.yaml` file from the `Workflow Files` folder into the `.github/workflows/` directory of each forked repository.
 ---
-## Step 3: Understand the Workflow Structure
 
-- The `ci_cd .yaml` file defines a **GitHub Actions workflow** that automates the CI/CD pipeline for your application.
 # Table of Docker Images
 
 | Service          | Docker Image Link   |
