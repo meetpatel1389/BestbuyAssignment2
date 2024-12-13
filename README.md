@@ -87,8 +87,11 @@ kubectl get services
 
 | Service          | Docker Image Link   |
 |------------------|---------------------|
-| Store-Front       |  (https://hub.docker.com/r/meetpatel1389/store-front)    |
-| Order-Service     | Docker Hub Link     |
-| Product-Service   | Docker Hub Link     |
-| Makeline-Service  | Docker Hub Link     |
-| AI-Service        | Docker Hub Link     |
+| Store-Front       |  [DOCKER HUB LINK](https://hub.docker.com/r/meetpatel1389/store-front)    |
+| Store-Admin     |  [DOCKER HUB LINK ](https://hub.docker.com/r/meetpatel1389/store-admin)   |
+| Order-Service     |  [DOCKER HUB LINK](https://hub.docker.com/r/meetpatel1389/order-service)    |
+| Product-Service   | [Docker Hub Link  ](https://hub.docker.com/r/meetpatel1389/product-service)   |
+| Makeline-Service  | [Docker Hub Link](https://hub.docker.com/r/meetpatel1389/makeline-service/tags)     |
+| AI-Service        | [Docker Hub Link](https://hub.docker.com/r/meetpatel1389/ai-service)     |
+| Vitrual-customer    |  [DOCKER HUB LINK ](https://hub.docker.com/r/meetpatel1389/virtual-customer)   |
+| Vitrual- worker    | [ DOCKER HUB LINK ](https://hub.docker.com/r/meetpatel1389/virtual-worker)   |
