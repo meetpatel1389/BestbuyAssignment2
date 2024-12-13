@@ -43,12 +43,51 @@ This repository contains a cloud-native, microservices-based demo application fo
   - Ensure `kubectl` is configured to communicate with your cluster.
 - **OpenAI / Azure OpenAI**
  Set Up the AI Backing Services
-To enable AI-generated product descriptions and image generation features, you will deploy the required **Azure OpenAI Services** for GPT-4 (text generation) and DALL-E 3 (image generation). This step is essential to configure the **AI Service** component in the Algonquin Pet Store application.
-
-
+To enable AI-generated product descriptions and image generation features, you will deploy the required **Azure OpenAI Services** for GPT-4 (text generation) and DALL-E 3 (image generation). This step is essential to configure the **AI Service** component in the Best buy Store application.
 ## Steps to Deploy
 
-1. **Clone the repository.**
+ **Clone this repository.**
+ 
+###  Retrieve and Configure API Keys
+
+1. **Get API Keys**:
+   - Go to the **Keys and Endpoints** section of your Azure OpenAI resource.
+   - Copy the **API Key (API key 1)** and **Endpoint URL**.
+
+2. **Base64 Encode the API Key**:
+   - Use the following command to Base64 encode your API key:
+     ```bash
+     echo -n "<your-api-key>" | base64
+     ```
+   - Replace `<your-api-key>` with your actual API key.
+
+---
+
+### Update AI Service Deployment Configuration in the `Deployment Files` folder.
+1. **Modify Secretes YAML**:
+   - Edit the `secrets.yaml` file.
+   - Replace `OPENAI_API_KEY` placeholder with the Base64-encoded value of the `API_KEY`. 
+2. **Modify Deployment YAML**:
+   - Edit the `aps-all-in-one.yaml` file.
+   - Replace the placeholders with the configurations you retrieved:
+     - `AZURE_OPENAI_DEPLOYMENT_NAME`: Enter the deployment name for GPT-4.
+     - `AZURE_OPENAI_ENDPOINT`: Enter the endpoint URL for the GPT-4 deployment.
+     - `AZURE_OPENAI_DALLE_ENDPOINT`: Enter the endpoint URL for the DALL-E 3 deployment.
+     - `AZURE_OPENAI_DALLE_DEPLOYMENT_NAME`: Enter the deployment name for DALL-E 3.
+
+   Example configuration in the YAML file:
+   ```yaml
+   - name: AZURE_OPENAI_API_VERSION
+     value: "2024-07-01-preview"
+   - name: AZURE_OPENAI_DEPLOYMENT_NAME
+     value: "gpt-4-deployment"
+   - name: AZURE_OPENAI_ENDPOINT
+     value: "https://<your-openai-resource-name>.openai.azure.com/"
+   - name: AZURE_OPENAI_DALLE_ENDPOINT
+     value: "https://<your-openai-resource-name>.openai.azure.com/"
+   - name: AZURE_OPENAI_DALLE_DEPLOYMENT_NAME
+     value: "dalle-3-deployment"
+   ```
 
 2. **Set up ConfigMaps and Secrets:**
    ```bash
