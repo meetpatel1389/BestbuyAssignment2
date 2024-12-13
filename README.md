@@ -77,3 +77,13 @@ This repository contains a cloud-native, microservices-based demo application fo
    | `ai-service`       | AI-based product descriptions and images   | [ai-service-A2](https://github.com/meetpatel1389/ai-service-A2.git)         |
    | `virtual-customer` | Simulates customer order creation          | [virtual-customer-A2](https://github.com/meetpatel1389/virtual-customer-A2.git) |
    | `virtual-worker`   | Simulates order completion                 | [virtual-worker-A2](https://github.com/meetpatel1389/virtual-worker-A2.git)  |
+
+# Table of Docker Images
+
+| Service          | Docker Image Link   |
+|------------------|---------------------|
+| Store-Front       | Docker Hub Link     |
+| Order-Service     | Docker Hub Link     |
+| Product-Service   | Docker Hub Link     |
+| Makeline-Service  | Docker Hub Link     |
+| AI-Service        | Docker Hub Link     |
