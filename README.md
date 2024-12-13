@@ -46,12 +46,6 @@ This repository contains a cloud-native, microservices-based demo application fo
 - **MongoDB Credentials & Storage**
   - Prepare PersistentVolume and PersistentVolumeClaim for MongoDB data.
   - Store MongoDB credentials as Kubernetes Secrets.
-# Deployment Instructions
-
-## Pre-requisites
-- Azure OpenAI instance with GPT-4 and DALL-E models.
-- Kubernetes cluster with at least 2 nodes.
-- Azure CLI and `kubectl` installed.
 
 ## Steps to Deploy
 
@@ -61,6 +55,13 @@ This repository contains a cloud-native, microservices-based demo application fo
    ```bash
    kubectl apply -f Deployment_Files/config-maps.yaml
    kubectl apply -f Deployment_Files/secrets.yaml
+
+
+### Deploy the application:
+```bash
+kubectl apply -f Deployment_Files/
+
+## Validate the deployment:
 
 
 
