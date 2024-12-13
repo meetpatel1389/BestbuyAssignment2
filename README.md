@@ -68,7 +68,7 @@ To enable AI-generated product descriptions and image generation features, you w
    - Edit the `secrets.yaml` file.
    - Replace `OPENAI_API_KEY` placeholder with the Base64-encoded value of the `API_KEY`. 
 2. **Modify Deployment YAML**:
-   - Edit the `aps-all-in-one.yaml` file.
+   - Edit the `ai-service.yaml` file.
    - Replace the placeholders with the configurations you retrieved:
      - `AZURE_OPENAI_DEPLOYMENT_NAME`: Enter the deployment name for GPT-4.
      - `AZURE_OPENAI_ENDPOINT`: Enter the endpoint URL for the GPT-4 deployment.
