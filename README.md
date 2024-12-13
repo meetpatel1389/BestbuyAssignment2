@@ -41,11 +41,10 @@ This repository contains a cloud-native, microservices-based demo application fo
 
 - **Kubernetes Cluster (AKS recommended)**
   - Ensure `kubectl` is configured to communicate with your cluster.
-- **OpenAI / Azure OpenAI Credentials**
-  - Retrieve API keys and/or endpoint and store them as Kubernetes Secrets.
-- **MongoDB Credentials & Storage**
-  - Prepare PersistentVolume and PersistentVolumeClaim for MongoDB data.
-  - Store MongoDB credentials as Kubernetes Secrets.
+- **OpenAI / Azure OpenAI**
+ Set Up the AI Backing Services
+To enable AI-generated product descriptions and image generation features, you will deploy the required **Azure OpenAI Services** for GPT-4 (text generation) and DALL-E 3 (image generation). This step is essential to configure the **AI Service** component in the Algonquin Pet Store application.
+
 
 ## Steps to Deploy
 
