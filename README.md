@@ -87,7 +87,7 @@ kubectl get services
 
 | Service          | Docker Image Link   |
 |------------------|---------------------|
-| Store-Front       | Docker Hub Link     |
+| Store-Front       |  (https://hub.docker.com/r/meetpatel1389/store-front)    |
 | Order-Service     | Docker Hub Link     |
 | Product-Service   | Docker Hub Link     |
 | Makeline-Service  | Docker Hub Link     |
