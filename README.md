@@ -58,8 +58,9 @@ This repository contains a cloud-native, microservices-based demo application fo
 
 
 ### Deploy the application:
+Deploy all the yaml files from the Deployment Files folder one by one
 ```bash
-kubectl apply -f Deployment_Files/
+kubectl apply -f Deployment_Files/store-front.yaml
 ````
 ## Validate the deployment:
 ```bash
