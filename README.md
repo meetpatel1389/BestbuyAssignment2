@@ -46,14 +46,34 @@ This repository contains a cloud-native, microservices-based demo application fo
 - **MongoDB Credentials & Storage**
   - Prepare PersistentVolume and PersistentVolumeClaim for MongoDB data.
   - Store MongoDB credentials as Kubernetes Secrets.
+# Deployment Instructions
 
-### Steps
+## Pre-requisites
+- Azure OpenAI instance with GPT-4 and DALL-E models.
+- Kubernetes cluster with at least 2 nodes.
+- Azure CLI and `kubectl` installed.
 
-1. **Clone Repositories:**
+## Steps to Deploy
+
+1. **Clone the repository.**
+
+2. **Set up ConfigMaps and Secrets:**
    ```bash
-   git clone <Store-Front Repo Link>
-   git clone <Store-Admin Repo Link>
-   git clone <Order-Service Repo Link>
-   git clone <Product-Service Repo Link>
-   git clone <Makeline-Service Repo Link>
-   git clone <AI-Service Repo Link>
+   kubectl apply -f Deployment_Files/config-maps.yaml
+   kubectl apply -f Deployment_Files/secrets.yaml
+
+
+
+1. **Table for Microservice Repository**:
+   - Visit the GitHub repositories for the services listed below and fork them into your own GitHub account:
+   
+   | Service            | Description                                | Github Repo                                                                 |
+   |--------------------|--------------------------------------------|-----------------------------------------------------------------------------|
+   | `store-front`      | Web app for customers to place orders      | [store-front-A2](https://github.com/meetpatel1389/store-front-A2.git)       |
+   | `store-admin`      | Web app for store employees                | [store-admin-A2](https://github.com/meetpatel1389/store-admin-A2.git)       |
+   | `order-service`    | Handles order placement                    | [order-service-A2](https://github.com/meetpatel1389/order-service-A2.git)   |
+   | `product-service`  | Handles CRUD operations on products        | [product-service-A2](https://github.com/meetpatel1389/product-service-A2.git) |
+   | `makeline-service` | Processes and completes orders             | [makeline-service-A2](https://github.com/meetpatel1389/makeline-service-A2.git) |
+   | `ai-service`       | AI-based product descriptions and images   | [ai-service-A2](https://github.com/meetpatel1389/ai-service-A2.git)         |
+   | `virtual-customer` | Simulates customer order creation          | [virtual-customer-A2](https://github.com/meetpatel1389/virtual-customer-A2.git) |
+   | `virtual-worker`   | Simulates order completion                 | [virtual-worker-A2](https://github.com/meetpatel1389/virtual-worker-A2.git)  |
