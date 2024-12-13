@@ -60,9 +60,13 @@ This repository contains a cloud-native, microservices-based demo application fo
 ### Deploy the application:
 ```bash
 kubectl apply -f Deployment_Files/
-
+````
 ## Validate the deployment:
+```bash
+kubectl get pods
+kubectl get services
 
+````
 
 
 1. **Table for Microservice Repository**:
